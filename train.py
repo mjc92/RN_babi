@@ -7,19 +7,33 @@ from functions import from_batch
 from torch.autograd import Variable
 
 # define hyperparameters
+<<<<<<< HEAD
 batch_size = 100
 embed_size = 64
 en_hidden_size = 32
 mlp_hidden_size = 256
 epochs = 200
 qa = 0
+=======
+batch_size = 32
+embed_size = 64
+en_hidden_size = 32
+mlp_hidden_size = 256
+epochs = 30
+qa = 20
+>>>>>>> 4b61a0844625c15e696ce80c164f2764146cccff
 
 # optional: if you're starting off from a previous model
 startoff=0
 
 # load dataset
+<<<<<<< HEAD
 # with open('datasets/train_qa%d.txt' %qa) as f:
 with open('datasets/train_10k.txt') as f:
+=======
+with open('datasets/train_qa%d.txt' %qa) as f:
+# with open('train_10k.txt') as f:
+>>>>>>> 4b61a0844625c15e696ce80c164f2764146cccff
     lines=f.readlines()
 if len(lines)%batch_size==0:
     num_batches = int(len(lines)/batch_size)
@@ -32,7 +46,11 @@ idx2word = np.load('idx2word.npy').item()
 vocab_size = len(word2idx)
 
 if startoff>0:
+<<<<<<< HEAD
     rn = torch.load('saved/rn_qa%d_epoch_%d.pth' %(qa,startoff))
+=======
+    rn = torch.load('saved/rn_%d.pth' %startoff)
+>>>>>>> 4b61a0844625c15e696ce80c164f2764146cccff
 else:
     rn = RN(vocab_size, embed_size, en_hidden_size, mlp_hidden_size)
 if torch.cuda.is_available():
@@ -50,8 +68,13 @@ def validate(rn, val_set):
     correct = sum(score)
     return total,correct
 
+<<<<<<< HEAD
 # with open('datasets/test_qa%d.txt' %qa) as f:
 with open('datasets/test_10k.txt') as f:
+=======
+with open('datasets/test_qa%d.txt' %qa) as f:
+# with open('test_1,2,3.txt') as f:
+>>>>>>> 4b61a0844625c15e696ce80c164f2764146cccff
     val_set=f.readlines()[:batch_size]
     
 # training
@@ -71,6 +94,7 @@ for epoch in range(epochs):
         if i % 20==0:
             print("loss for %d/%d: %1.3f" % (i,num_batches,loss.data[0]))
     print("loss for epoch %d: %1.3f" % (epoch,loss.data[0]))
+<<<<<<< HEAD
 #     if i % 5==0:
 #         torch.save(obj=rn,f='saved/'+model_name)
     total, correct = validate(rn, val_set)
@@ -80,3 +104,12 @@ for epoch in range(epochs):
 #    model_name = 'rn_10k_reduced_epoch_%d_acc_%1.3f.pth' % (qa,epoch+startoff+1,val_score)
     if epoch % 10==9:
         torch.save(obj=rn,f='saved/'+model_name)
+=======
+    model_name = 'rn_qa%d_epoch_%d.pth' % (qa,epoch+1+startoff)
+    if epoch % 10==0:
+        torch.save(obj=rn,f='saved/'+model_name)
+#     if i % 5==0:
+#         torch.save(obj=rn,f='saved/'+model_name)
+    total, correct = validate(rn, val_set)
+    print("Validation score for task %d: %1.3f"%(qa,correct*1.0/total))
+>>>>>>> 4b61a0844625c15e696ce80c164f2764146cccff
